@@ -36,6 +36,7 @@ Organizations:
             # encoded in the genesis block in the Application section context
             - Host: peer.mother.efi.com
               Port: 7051
+
     - &MediaMarkt
         Name: MediaMarktMSP
 

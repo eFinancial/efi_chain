@@ -1,0 +1,93 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+
+  orderer.efi.com:
+    container_name: orderer.efi.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/efi.com/orderers/orderer.efi.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/efi.com/orderers/orderer.efi.com/tls/:/var/hyperledger/orderer/tls
+    - orderer.efi.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+  peer.mother.efi.com:
+    container_name: peer.mother.efi.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer.mother.efi.com
+      - CORE_PEER_ADDRESS=peer.mother.efi.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer.mother.efi.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer.mother.efi.com:7051
+      - CORE_PEER_LOCALMSPID=MotherMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer.mother.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer.mother.efi.com/tls:/etc/hyperledger/fabric/tls
+        - peer.mother.efi.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+      - 7053:7053
+
+  peer.mediaMarkt.efi.com:
+    container_name: peer.mediaMarkt.efi.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer.mediaMarkt.efi.com
+      - CORE_PEER_ADDRESS=peer.mediaMarkt.efi.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer.mediaMarkt.efi.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer.mediaMarkt.efi.com:7051
+      - CORE_PEER_LOCALMSPID=MediaMarktMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer.mediaMarkt.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer.mediaMarkt.efi.com/tls:/etc/hyperledger/fabric/tls
+        - peer.mediaMarkt.efi.com:/var/hyperledger/production
+    ports:
+      - 8051:7051
+      - 8053:7053
+
+  peer.aldi.efi.com:
+    container_name: peer.aldi.efi.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer.aldi.efi.com
+      - CORE_PEER_ADDRESS=peer.aldi.efi.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer.aldi.efi.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer.aldi.efi.com:7051
+      - CORE_PEER_LOCALMSPID=MediaMarktMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer.aldi.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer.aldi.efi.com/tls:/etc/hyperledger/fabric/tls
+        - peer.aldi.efi.com:/var/hyperledger/production
+    ports:
+      - 9051:7051
+      - 9053:7053
