@@ -1,7 +1,3 @@
-# Copyright IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
 version: '2'
 
 services:
@@ -10,7 +6,7 @@ services:
     container_name: orderer.efi.com
     image: hyperledger/fabric-orderer
     environment:
-      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
@@ -27,66 +23,63 @@ services:
     - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
     - ../crypto-config/ordererOrganizations/efi.com/orderers/orderer.efi.com/msp:/var/hyperledger/orderer/msp
     - ../crypto-config/ordererOrganizations/efi.com/orderers/orderer.efi.com/tls/:/var/hyperledger/orderer/tls
-    - orderer.efi.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
 
-  peer.mother.efi.com:
-    container_name: peer.mother.efi.com
+  peer0.mother.efi.com:
+    container_name: peer0.mother.efi.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer.mother.efi.com
-      - CORE_PEER_ADDRESS=peer.mother.efi.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer.mother.efi.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer.mother.efi.com:7051
+      - CORE_PEER_ID=peer0.mother.efi.com
+      - CORE_PEER_ADDRESS=peer0.mother.efi.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.mother.efi.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.mother.efi.com:7051
       - CORE_PEER_LOCALMSPID=MotherMSP
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer0.mother.efi.com/msp:/etc/hyperledger/fabric/msp
         - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer0.mother.efi.com/tls:/etc/hyperledger/fabric/tls
-        - peer.mother.efi.com:/var/hyperledger/production
     ports:
       - 7051:7051
       - 7053:7053
 
-  peer.mediaMarkt.efi.com:
-    container_name: peer.mediaMarkt.efi.com
+  peer0.mediamarkt.efi.com:
+    container_name: peer0.mediamarkt.efi.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer.mediaMarkt.efi.com
-      - CORE_PEER_ADDRESS=peer.mediaMarkt.efi.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer.mediaMarkt.efi.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer.mediaMarkt.efi.com:7051
-      - CORE_PEER_LOCALMSPID=MediaMarktMSP
+      - CORE_PEER_ID=peer0.mediamarkt.efi.com
+      - CORE_PEER_ADDRESS=peer0.mediamarkt.efi.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.mediamarkt.efi.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.mediamarkt.efi.com:7051
+      - CORE_PEER_LOCALMSPID=MediamarktMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer0.mediaMarkt.efi.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer0.mediaMarkt.efi.com/tls:/etc/hyperledger/fabric/tls
-        - peer.mediaMarkt.efi.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/mediamarkt.efi.com/peers/peer0.mediamarkt.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/mediamarkt.efi.com/peers/peer0.mediamarkt.efi.com/tls:/etc/hyperledger/fabric/tls
+
     ports:
       - 8051:7051
       - 8053:7053
 
-  peer.aldi.efi.com:
-    container_name: peer.aldi.efi.com
+  peer0.aldi.efi.com:
+    container_name: peer0.aldi.efi.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer.aldi.efi.com
-      - CORE_PEER_ADDRESS=peer.aldi.efi.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer.aldi.efi.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer.aldi.efi.com:7051
-      - CORE_PEER_LOCALMSPID=MediaMarktMSP
+      - CORE_PEER_ID=peer0.aldi.efi.com
+      - CORE_PEER_ADDRESS=peer0.aldi.efi.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.aldi.efi.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.aldi.efi.com:7051
+      - CORE_PEER_LOCALMSPID=AldiMSP
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer0.aldi.efi.com/msp:/etc/hyperledger/fabric/msp
         - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer0.aldi.efi.com/tls:/etc/hyperledger/fabric/tls
-        - peer.aldi.efi.com:/var/hyperledger/production
     ports:
       - 9051:7051
       - 9053:7053

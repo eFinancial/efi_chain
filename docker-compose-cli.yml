@@ -1,17 +1,7 @@
-# Copyright IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
 version: '2'
 
-volumes:
-  orderer.efi.com:
-  peer.mother.efi.com:
-  peer.mediaMarkt.efi.com:
-  peer.aldi.efi.com:
 networks:
-  efi:
+  basic:
 
 services:
 
@@ -21,44 +11,42 @@ services:
       service: orderer.efi.com
     container_name: orderer.efi.com
     networks:
-      - efi
+      - basic
 
-  peer.mother.efi.com:
-    container_name: peer.mother.efi.com
+  peer0.mother.efi.com:
+    container_name: peer0.mother.efi.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer.mother.efi.com
+      service: peer0.mother.efi.com
     networks:
-      - efi
+      - basic
 
-  peer.mediaMarkt.efi.com:
-    container_name: peer.mediaMarkt.efi.com
+  peer0.mediamarkt.efi.com:
+    container_name: peer0.mediamarkt.efi.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer.mediaMarkt.efi.com
+      service: peer0.mediamarkt.efi.com
     networks:
-      - efi
+      - basic
 
-  peer.aldi.efi.com:
-    container_name: peer.aldi.efi.com
+  peer0.aldi.efi.com:
+    container_name: peer0.aldi.efi.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer.aldi.efi.com
+      service: peer0.aldi.efi.com
     networks:
-      - efi
+      - basic
 
   cli:
     container_name: cli
     image: hyperledger/fabric-tools
     tty: true
-    stdin_open: true
     environment:
       - GOPATH=/opt/gopath
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_LOGGING_LEVEL=DEBUG
-      - CORE_LOGGING_LEVEL=INFO
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer.mother.efi.com:7051
+      - CORE_PEER_ADDRESS=peer0.mother.efi.com:7051
       - CORE_PEER_LOCALMSPID=MotherMSP
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mother.efi.com/peers/peer0.mother.efi.com/tls/server.crt
@@ -66,17 +54,16 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mother.efi.com/peers/peer0.mother.efi.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mother.efi.com/users/Admin@mother.efi.com/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    # command: /bin/bash
+    # command: /bin/bash -c './scripts/script.sh ${CHANNEL_NAME}; sleep $TIMEOUT'
     volumes:
         - /var/run/:/host/var/run/
         - ./../chaincode/:/opt/gopath/src/github.com/chaincode
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - orderer.efi.com
-      - peer.mother.efi.com
-      - peer.mediaMarkt.efi.com
-      - peer.aldi.efi.com
+      - peer0.mother.efi.com
+      - peer0.mediamarkt.efi.com
+      - peer0.aldi.efi.com
     networks:
-      - efi
+      - basic

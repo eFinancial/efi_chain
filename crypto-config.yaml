@@ -11,7 +11,7 @@ PeerOrgs:
     Users:
       Count: 1
   - Name: MediaMarkt
-    Domain: mediaMarkt.efi.com
+    Domain: mediamarkt.efi.com
     Template:
       Count: 1
     Users:
