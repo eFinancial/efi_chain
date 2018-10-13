@@ -55,7 +55,7 @@ services:
       - CORE_PEER_ADDRESS=peer0.mediamarkt.efi.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.mediamarkt.efi.com:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.mediamarkt.efi.com:7051
-      - CORE_PEER_LOCALMSPID=MediamarktMSP
+      - CORE_PEER_LOCALMSPID=MediaMarktMSP
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/mediamarkt.efi.com/peers/peer0.mediamarkt.efi.com/msp:/etc/hyperledger/fabric/msp
