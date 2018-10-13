@@ -13,36 +13,59 @@
 #
 ################################################################################
 Organizations:
-
-    # SampleOrg defines an MSP using the sampleconfig.  It should never be used
-    # in production but may be used as a template for other definitions
-    - &OrdererOrg
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
-        Name: OrdererOrg
+    - &Orderer
+        Name: EfiOrderer
 
         # ID to load the MSP definition as
-        ID: OrdererMSP
+        ID: EfiOrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+        MSPDir: crypto-config/ordererOrganizations/efi.com/msp
 
-    - &Org1
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
-        Name: Org1MSP
+    - &Mother
+        Name: MotherMSP
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: MotherMSP
 
-        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+        MSPDir: crypto-config/peerOrganizations/mother.efi.com/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org1.example.com
+            - Host: peer.mother.efi.com
               Port: 7051
+    - &MediaMarkt
+        Name: MediaMarktMSP
+
+        # ID to load the MSP definition as
+        ID: MediaMarktMSP
+
+        MSPDir: crypto-config/peerOrganizations/mediaMarkt.efi.com/msp
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer.mediaMarkt.efi.com
+              Port: 7051
+
+    - &Aldi
+        Name: AldiMSP
+
+        # ID to load the MSP definition as
+        ID: AldiMSP
+
+        MSPDir: crypto-config/peerOrganizations/aldi.efi.com/msp
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer.aldi.efi.com
+              Port: 7051
+
 
 ################################################################################
 #
@@ -73,7 +96,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.example.com:7050
+        - orderer.efi.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -113,19 +136,25 @@ Orderer: &OrdererDefaults
 ################################################################################
 Profiles:
 
-    OneOrgOrdererGenesis:
+    EfiGenesis:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *OrdererOrg
+                - *Orderer
         Consortiums:
-            SampleConsortium:
+            EfiConsortium:
                 Organizations:
-                    - *Org1
-    OneOrgChannel:
-        Consortium: SampleConsortium
+                    - *MediaMarkt
+                    - *Aldi
+                    - *Mother
+            Efi:
+                Organizations:
+
+    EfiChannel:
+        Consortium: EfiConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
-
+                - *MediaMarkt
+                - *Aldi
+                - *Mother
