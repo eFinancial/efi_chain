@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
 version: '2'
 
 services:
@@ -45,8 +44,8 @@ services:
       - CORE_PEER_LOCALMSPID=MotherMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer.mother.efi.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer.mother.efi.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer0.mother.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/mother.efi.com/peers/peer0.mother.efi.com/tls:/etc/hyperledger/fabric/tls
         - peer.mother.efi.com:/var/hyperledger/production
     ports:
       - 7051:7051
@@ -65,8 +64,8 @@ services:
       - CORE_PEER_LOCALMSPID=MediaMarktMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer.mediaMarkt.efi.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer.mediaMarkt.efi.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer0.mediaMarkt.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/mediaMarkt.efi.com/peers/peer0.mediaMarkt.efi.com/tls:/etc/hyperledger/fabric/tls
         - peer.mediaMarkt.efi.com:/var/hyperledger/production
     ports:
       - 8051:7051
@@ -85,8 +84,8 @@ services:
       - CORE_PEER_LOCALMSPID=MediaMarktMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer.aldi.efi.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer.aldi.efi.com/tls:/etc/hyperledger/fabric/tls
+        - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer0.aldi.efi.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/aldi.efi.com/peers/peer0.aldi.efi.com/tls:/etc/hyperledger/fabric/tls
         - peer.aldi.efi.com:/var/hyperledger/production
     ports:
       - 9051:7051
