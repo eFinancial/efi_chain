@@ -1,0 +1,121 @@
+{
+    "name": "byfn-network",
+    "x-type": "hlfv1",
+    "version": "1.0.0",
+    "channels": {
+        "billchannel": {
+            "orderers": [
+                "orderer.efi.com"
+            ],
+            "peers": {
+                "peer0.mother.efi.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                },
+                "peer0.mediamarkt.efi.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                },
+                "peer0.aldi.efi.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Mother": {
+            "mspid": "MotherMSP",
+            "peers": [
+                "peer0.mother.efi.com"
+            ],
+            "certificateAuthorities": [
+                "ca.mother.efi.com"
+            ]
+        },
+        "MediaMarkt": {
+            "mspid": "MediaMarktMSP",
+            "peers": [
+                "peer0.mediamarkt.efi.com"
+            ],
+            "certificateAuthorities": [
+                "ca.mediamarkt.efi.com"
+            ]
+        },
+        "Aldi": {
+            "mspid": "AldiMSP",
+            "peers": [
+                "peer0.aldi.efi.com"
+            ],
+            "certificateAuthorities": [
+                "ca.aldi.efi.com"
+            ]
+        }
+    },
+    "orderers": {
+        "orderer.efi.com": {
+            "url": "grpcs://localhost:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer.efi.com"
+            },
+            "tlsCACerts": {
+                "pem": "INSERT_ORDERER_CA_CERT"
+            }
+        }
+    },
+    "peers": {
+        "peer0.mother.efi.com": {
+            "url": "grpcs://localhost:7051",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.mother.efi.com"
+            },
+            "tlsCACerts": {
+                "pem": "INSERT_MOTHER_CA_CERT"
+            }
+        },
+        "peer1.mediamarkt.efi.com": {
+            "url": "grpcs://localhost:8051",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.mediamarkt.efi.com"
+            },
+            "tlsCACerts": {
+                "pem": "INSERT_MEDIAMARKT_CA_CERT"
+            }
+        },
+        "peer0.aldi.efi.com": {
+            "url": "grpcs://localhost:9051",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.aldi.efi.com"
+            },
+            "tlsCACerts": {
+                "pem": "INSERT_ALDI_CA_CERT"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.mother.efi.com": {
+            "url": "https://localhost:7054",
+            "caName": "ca-mother1",
+            "httpOptions": {
+                "verify": false
+            }
+        },
+        "ca.mediamarkt.efi.com": {
+            "url": "https://localhost:8054",
+            "caName": "ca-mediamarkt2",
+            "httpOptions": {
+                "verify": false
+            }
+        },
+        "ca.aldi.efi.com": {
+            "url": "https://localhost:9054",
+            "caName": "ca-aldi3",
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

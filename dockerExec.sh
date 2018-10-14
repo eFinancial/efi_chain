@@ -1,4 +1,4 @@
-Aldimediamarkt# Creating channel
+# Creating channel
 export CHANNEL_NAME=billchannel
 
 peer channel create -o orderer.efi.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/efi.com/orderers/orderer.efi.com/msp/tlscacerts/tlsca.efi.com-cert.pem

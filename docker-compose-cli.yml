@@ -4,6 +4,56 @@ networks:
   basic:
 
 services:
+  ca0:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-mother
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.mother.efi.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/60ae14c5b8253d521134dcca5b2bd99b035404804115cab3acbf3e912af6b046_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.mother.efi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/60ae14c5b8253d521134dcca5b2bd99b035404804115cab3acbf3e912af6b046_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/mother.efi.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerMother
+    networks:
+      - basic
+
+  ca1:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-mediamarkt
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.mediamarkt.efi.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/22aa2557b09c54884c12879d92f41ac5be416ab50298fd9300f4eb906cbcc3c8_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.mediamarkt.efi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/22aa2557b09c54884c12879d92f41ac5be416ab50298fd9300f4eb906cbcc3c8_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/mediamarkt.efi.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerMediaMarkt
+    networks:
+      - basic
+
+  ca2:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-aldi
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.aldi.efi.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/363b541dace6bb99927a508ee8091e88e993f12cfa86819bb97c3b99e077e5f6_sk
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.aldi.efi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/363b541dace6bb99927a508ee8091e88e993f12cfa86819bb97c3b99e077e5f6_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/aldi.efi.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerAldi
+    networks:
+      - basic
 
   orderer.efi.com:
     extends:
@@ -34,6 +84,19 @@ services:
     extends:
       file:  base/docker-compose-base.yaml
       service: peer0.aldi.efi.com
+    networks:
+      - basic
+
+  couchdb:
+    container_name: couchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 5984:5984
     networks:
       - basic
 
